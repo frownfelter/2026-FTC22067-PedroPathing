@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 // You would need to import your specific OTOS library class here, e.g.:
 // import com.sparkfun.otos.OTOS_Sensor;
 // import com.sparkfun.otos.Pose2D;
-
+@Disabled
 /**
  * Mecanum Drive TeleOp Code with SparkFun OTOS Integration Placeholder
  */

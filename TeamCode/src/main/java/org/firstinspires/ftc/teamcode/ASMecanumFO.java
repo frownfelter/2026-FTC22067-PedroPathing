@@ -1,46 +1,44 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-/*
- * This OpMode illustrates how to program your robot to drive field relative.  This means
- * that the robot drives the direction you push the joystick regardless of the current orientation
- * of the robot.
- *
- * This OpMode assumes that you have four mecanum wheels each on its own motor named:
- *   front_left_motor, front_right_motor, back_left_motor, back_right_motor
- *
- *   and that the left motors are flipped such that when they turn clockwise the wheel moves backwards
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- *
- */
-@TeleOp(name = "Robot: ASMecanumFO", group = "Robot")
+
+@TeleOp(name = "ASMecanumFO", group = "Robot")
 
 public class ASMecanumFO extends OpMode {
     // This declares the four motors needed
+    //DECLARE WHEELS
     DcMotor frontLeftDrive;
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
 
-    // This declares the IMU needed to get the current direction the robot is facing
+    //DECLARE INTAKE
+    private DcMotor intake = null;
+
+    //DECLARE OUTTAKE
+    private DcMotor outtake = null;
+
+    //DELARE IMU
     IMU imu;
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "leftdrivefront");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "rightdrivefront");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "leftdriveback");
-        backRightDrive = hardwareMap.get(DcMotor.class, "rightdriveback");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "leftRear");
+        backRightDrive = hardwareMap.get(DcMotor.class, "rightRear");
+
+        intake = hardwareMap.get(DcMotor.class, "IN");
+        outtake = hardwareMap.get(DcMotor.class, "OUT");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -49,6 +47,14 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
+        intake.setDirection(DcMotor.Direction.REVERSE);
+        outtake.setDirection(DcMotor.Direction.REVERSE);
+
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
         // wires, you should remove these
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -56,15 +62,19 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //outtake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
 
 
         imu = hardwareMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
@@ -87,17 +97,21 @@ public class ASMecanumFO extends OpMode {
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
         if (gamepad1.left_bumper) {
-        //    drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
-        //    drive(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); // updated
-            driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //modified new
+            //    drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
+            //    drive(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); // updated
+            //driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //modified new
+
+            // cubing (raising to the power of 3) am input gives more low-speed control
+            driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, Math.pow(gamepad1.left_stick_y, 3)); //modified new
         } else {
-        //    driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
-        //    driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //updated
+            //    driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
+            //    driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //updated
             drive(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //modified new
         }
     }
 
     // This routine drives the robot field relative
+
     private void driveFieldRelative(double forward, double right, double rotate) {
         // First, convert direction being asked to drive to polar coordinates
         double theta = Math.atan2(forward, right);
@@ -115,14 +129,13 @@ public class ASMecanumFO extends OpMode {
         drive(newForward, newRight, rotate);
     }
 
-    // Thanks to FTC16072 for sharing this code!!
     public void drive(double forward, double right, double rotate) {
         // This calculates the power needed for each wheel based on the amount of forward,
         // strafe right, and rotate
-        double frontLeftPower = forward + right + rotate;
+        double frontLeftPower = forward - right + rotate;
         double frontRightPower = forward - right - rotate;
         double backRightPower = forward + right - rotate;
-        double backLeftPower = forward - right + rotate;
+        double backLeftPower = forward + right + rotate;
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;  // make this slower for outreaches
@@ -135,12 +148,41 @@ public class ASMecanumFO extends OpMode {
         maxPower = Math.max(maxPower, Math.abs(backRightPower));
         maxPower = Math.max(maxPower, Math.abs(backLeftPower));
 
+        if (gamepad2.left_bumper) { // or any other button
+            intake.setPower(1.0);
+        } else {
+            intake.setPower(0.0);
+        }
+
+        if (gamepad2.a) { // or any other button
+            intake.setPower(-.5);
+        } else {
+            intake.setPower(0.0);
+        }
+
+
+        //if (gamepad2.a) {
+        //    intake.setDirection(DcMotor.Direction.FORWARD);
+        //} else {
+        //     intake.setDirection(DcMotor.Direction.REVERSE);
+        // }
+
+        //outtake.setPower(gamepad2.right_trigger);
+        if (gamepad2.right_bumper) { // or any other button
+            outtake.setPower(.75);
+        } else {
+            outtake.setPower(-.1);
+        }
+
+
+
+
         // We multiply by maxSpeed so that it can be set lower for outreaches
         // When a young child is driving the robot, we may not want to allow full
         // speed.
-        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower) * .7);
+        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower) * .7);
+        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower) * .7);
+        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower) * .7);
     }
 }
