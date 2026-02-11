@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 
 @Autonomous
-public class blueClose extends OpMode {
+public class redFar extends OpMode {
 
     private Follower follower;
     private Timer pathTimer, OpModeTimer;
@@ -31,8 +31,8 @@ public class blueClose extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose (40.44800000000001, 8.288, Math.toRadians(90));
-    private final Pose shootPose = new Pose (63.64799999999999, 92.076, Math.toRadians(135));//TURN MORE LEFT NEXT TIME
+    private final Pose startPose = new Pose (122.97599999999998, 123.26399999999998, Math.toRadians(36));
+    private final Pose shootPose = new Pose (86.68800000000002, 94.17600000000002, Math.toRadians(40));//TURN MORE LEFT NEXT TIME
 
     private PathChain driveStartPosShootPos;
 
