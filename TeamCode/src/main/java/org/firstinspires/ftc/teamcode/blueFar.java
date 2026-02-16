@@ -47,7 +47,7 @@ public class blueFar extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOTPOS:
                 follower.followPath(driveStartPosShootPos, true);
-                outtake.setPower(.88);
+                outtake.setPower(.85);
                 //pathState = PathState.SHOOT_PRELOAD;
                 setPathState(PathState.SHOOT_PRELOAD);
                 break;
