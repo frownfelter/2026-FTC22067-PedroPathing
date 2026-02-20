@@ -26,6 +26,7 @@ public class ASMecanumFO extends OpMode {
 
     //DECLARE OUTTAKE
     private DcMotor outtake = null;
+    private DcMotor outtake2 = null;
 
     //DELARE IMU
     IMU imu;
@@ -39,6 +40,7 @@ public class ASMecanumFO extends OpMode {
 
         intake = hardwareMap.get(DcMotor.class, "IN");
         outtake = hardwareMap.get(DcMotor.class, "OUT");
+        outtake2 = hardwareMap.get(DcMotor.class, "OUT2");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -65,7 +67,7 @@ public class ASMecanumFO extends OpMode {
         //outtake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        outtake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 
@@ -86,8 +88,8 @@ public class ASMecanumFO extends OpMode {
     public void loop() {
         telemetry.addLine("Press A to reset Yaw");
         telemetry.addLine("Hold left bumper to drive in robot relative");
-        telemetry.addLine("The left joystick sets the robot direction");
-        telemetry.addLine("Moving the right joystick left and right turns the robot");
+        telemetry.addLine("GO RedShift");
+        // telemetry.addLine("Moving the right joystick left and right turns the robot");
 
         // If you press the A button, then you reset the Yaw to be zero from the way
         // the robot is currently pointing
@@ -169,9 +171,11 @@ public class ASMecanumFO extends OpMode {
 
         //outtake.setPower(gamepad2.right_trigger);
         if (gamepad2.right_bumper) { // or any other button
-            outtake.setPower(.75);
+            outtake.setPower(.85);
+            outtake2.setPower(.85);
         } else {
             outtake.setPower(-.1);
+            outtake2.setPower(-.1);
         }
 
 

@@ -21,6 +21,8 @@ public class redFar extends OpMode {
     private Follower follower;
     private Timer pathTimer, OpModeTimer;
     private DcMotor outtake = null;
+
+    //private DcMotor outtake2 = null;
     private DcMotor intake = null;
 
     public enum PathState {
@@ -34,7 +36,7 @@ public class redFar extends OpMode {
 
     private final Pose startPose = new Pose (122.97599999999998, 123.26399999999998, Math.toRadians(36));
     private final Pose shootPose = new Pose (86.68800000000002, 94.17600000000002, Math.toRadians(38));//TURN MORE LEFT NEXT TIME
-    private final Pose inPose = new Pose (103.392,84.67200000000003, Math.toRadians(-1));
+    private final Pose inPose = new Pose (91.87200000000001,87.84, Math.toRadians(-1));
 
     private PathChain driveStartPosShootPos, driveShootPosInPos;
 
@@ -53,7 +55,8 @@ public class redFar extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOTPOS:
                 follower.followPath(driveStartPosShootPos, true);
-                outtake.setPower(.8);
+                outtake.setPower(.88);
+                //outtake2.setPower(0.88);
                 //pathState = PathState.SHOOT_PRELOAD;
                 setPathState(PathState.SHOOT_PRELOAD);
                 break;
@@ -87,6 +90,9 @@ public class redFar extends OpMode {
 
         outtake = hardwareMap.get(DcMotor.class, "OUT");
         outtake.setDirection(DcMotor.Direction.REVERSE);
+
+        //outtake2 = hardwareMap.get(DcMotor.class, "OUT2");
+        //outtake2.setDirection(DcMotor.Direction.FORWARD);
 
         intake = hardwareMap.get(DcMotor.class, "IN");
         intake.setDirection(DcMotor.Direction.REVERSE);
