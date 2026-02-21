@@ -171,7 +171,7 @@ public class ASMecanumFO extends OpMode {
 
         //outtake.setPower(gamepad2.right_trigger);
         if (gamepad2.right_bumper) { // or any other button
-            outtake.setPower(.85);
+            outtake.setPower(1);
             outtake2.setPower(.85);
         } else {
             outtake.setPower(-.1);

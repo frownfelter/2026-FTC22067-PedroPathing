@@ -35,7 +35,7 @@ public class blueFar extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose (19.295999999999992, 121.76400000000007, Math.toRadians(144));
-    private final Pose shootPose = new Pose (48.096, 105.03599999999999, Math.toRadians(148));//TURN MORE LEFT NEXT TIME
+    private final Pose shootPose = new Pose (42.33599999999999, 107.91599999999998, Math.toRadians(144));//TURN MORE LEFT NEXT TIME
     private final Pose inPose = new Pose (52.75199999999999,83.49600000000002, Math.toRadians(180));
 
     private PathChain driveStartPosShootPos, driveShootPosInPos;
@@ -55,16 +55,16 @@ public class blueFar extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOTPOS:
                 follower.followPath(driveStartPosShootPos, true);
-                outtake.setPower(0.75);
+                outtake.setPower(.95);
                 //outtake2.setPower(.75);
                 //pathState = PathState.SHOOT_PRELOAD;
                 setPathState(PathState.SHOOT_PRELOAD);
                 break;
             case SHOOT_PRELOAD:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
-                    intake.setPower(1);
+                    intake.setPower(.95);
                 }
-                if (pathTimer.getElapsedTimeSeconds() > 8) {
+                if (pathTimer.getElapsedTimeSeconds() > 7) {
                     follower.followPath(driveShootPosInPos, true);
                     setPathState(PathState.DRIVE_SHOOTPOS_INPOS);
                     intake.setPower(0);
@@ -94,7 +94,7 @@ public class blueFar extends OpMode {
         outtake.setDirection(DcMotor.Direction.REVERSE);
 
         //outtake2 = hardwareMap.get(DcMotor.class, "OUT2");
-        outtake2.setDirection(DcMotor.Direction.FORWARD);
+        //outtake2.setDirection(DcMotor.Direction.FORWARD);
 
         intake = hardwareMap.get(DcMotor.class, "IN");
         intake.setDirection(DcMotor.Direction.REVERSE);

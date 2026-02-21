@@ -32,7 +32,7 @@ public class redClose extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose (104.256, 8.352000000000007, Math.toRadians(90));
-    private final Pose shootPose = new Pose (86.68800000000002, 94.17600000000002, Math.toRadians(44));//TURN MORE LEFT NEXT TIME
+    private final Pose shootPose = new Pose (98.78400000000002, 104.83200000000002, Math.toRadians(44));//TURN MORE LEFT NEXT TIME
 
     private PathChain driveStartPosShootPos;
 
@@ -47,14 +47,18 @@ public class redClose extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOTPOS:
                 follower.followPath(driveStartPosShootPos, true);
-                outtake.setPower(.8);
+                outtake.setPower(.9);
                 //pathState = PathState.SHOOT_PRELOAD;
                 setPathState(PathState.SHOOT_PRELOAD);
                 break;
             case SHOOT_PRELOAD:
-                if (!follower.isBusy()) {
-                    intake.setPower(1);
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    intake.setPower(.95);
                     telemetry.addLine("Done Path 1");
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 7) {
+                    intake.setPower(0);
+                    outtake.setPower(0);
                 }
                 break;
 

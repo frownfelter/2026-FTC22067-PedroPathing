@@ -35,7 +35,7 @@ public class redFar extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose (122.97599999999998, 123.26399999999998, Math.toRadians(36));
-    private final Pose shootPose = new Pose (86.68800000000002, 94.17600000000002, Math.toRadians(38));//TURN MORE LEFT NEXT TIME
+    private final Pose shootPose = new Pose (100.51200000000001, 105.98400000000002, Math.toRadians(30));
     private final Pose inPose = new Pose (91.87200000000001,87.84, Math.toRadians(-1));
 
     private PathChain driveStartPosShootPos, driveShootPosInPos;
@@ -55,18 +55,20 @@ public class redFar extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOTPOS:
                 follower.followPath(driveStartPosShootPos, true);
-                outtake.setPower(.88);
+                outtake.setPower(.95);
                 //outtake2.setPower(0.88);
                 //pathState = PathState.SHOOT_PRELOAD;
                 setPathState(PathState.SHOOT_PRELOAD);
                 break;
             case SHOOT_PRELOAD:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
-                    intake.setPower(1);
+                    intake.setPower(.95);
                 }
-                if (pathTimer.getElapsedTimeSeconds() > 8) {
+                if (pathTimer.getElapsedTimeSeconds() > 7) {
                     follower.followPath(driveShootPosInPos, true);
                     setPathState(PathState.DRIVE_SHOOTPOS_INPOS);
+                    intake.setPower(0);
+                    outtake.setPower(0);
                 }
                 break;
             case DRIVE_SHOOTPOS_INPOS:
